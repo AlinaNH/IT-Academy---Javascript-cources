@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cycles – Hospital accounting</title>
+        <script>
+            var clientAmount = +prompt("How many clients has it been today is hospital?");
+            var clientAge;
+            var youngestClientAge = 200;
+            var youngestClient;
+            var oldestClientAge = 0;
+            var averageAge = 0;
+
+            if (clientAmount == 0) {
+                alert("Nobody comes today.");
+            } else {
+                for (var i = 1; i <= clientAmount; i++) {
+                    do {
+                        clientAge = +prompt("How old is client " + i + "?");
+                    } while ((!clientAge) || (isNaN(clientAge)))
+                    if (clientAge < youngestClientAge) {
+                        youngestClientAge = clientAge;
+                        youngestClient = i;
+                    }
+                    if (clientAge > oldestClientAge) {
+                        oldestClientAge = clientAge;
+                        oldestClient = i;
+                    }
+                    averageAge += clientAge;
+                }
+                averageAge = parseInt(averageAge / --i);
+                alert("Today was " + i + " clients. \n"
+                + "Client " + youngestClient + " is the youngest ("
+                + youngestClientAge + " years).\n"
+                + "Client " + oldestClient + " is the oldest (" + oldestClientAge + " years).\n"
+                + "Avarage client age is " + averageAge + " years old.");
+            }
+        </script>
+    </head>
+</html>

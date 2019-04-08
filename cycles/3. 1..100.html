@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Cycles – 1..100</title>
+		<script>
+			"use strict"
+			var output;
+			for (let i = 1; i <= 100; i++) {
+			    switch(true) {
+			        case ((i%3 == 0) && (i%5 == 0)) :
+			            output = "threefive";
+			            console.log(output);
+			            break;
+			        case (i%3 == 0) :
+			            output = "three";
+			            console.log(output);
+			            break;
+			        case (i%5 == 0) :
+			            output = "five";
+			            console.log(output);
+			            break;
+			        default :
+			            output = i;
+			            console.log(output);
+			            break;
+			    }
+			}
+		</script>
+	</head>
+</html>

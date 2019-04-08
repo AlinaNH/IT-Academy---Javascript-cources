@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cycles – Deposit calculator</title>
+        <script>
+            var depositSum, monthOfSaving;
+
+            do {
+                depositSum = +prompt("Enter the sum of deposit");
+            } while ((!depositSum) || (isNaN(depositSum)));
+            do {
+                monthOfSaving = +prompt("Enter the term of saving deposit (months)");
+            } while ((!monthOfSaving) || (parseFloat(isNaN(monthOfSaving))));
+
+            const INTEREST_RATE = 5;
+
+            var date = new Date();
+            var currentYear = date.getFullYear(); // is necessary for counting saving period
+            var daysInYear; // 
+            currentYear%4 ? daysInYear = 366 : daysInYear  = 365;
+            var currentMonth = date.getMonth(); // exception for leap year
+            var year = currentYear; // dinamic variable for cycle
+            var month = currentMonth; // dinamic variable for cycle
+            var monthPercent, monthProfit;
+            var monthProfitOutput = "";
+            var monthText;
+            var sumOfProfit = 0;
+
+            for (let i = 1; i <= monthOfSaving; i++) {
+                daysInCurrentMonth = new Date(year, ++month + 1, 0); // last day in every month of the period
+                daysInMonth = daysInCurrentMonth.getDate(); // days in "i" month
+                month = daysInCurrentMonth.getMonth(); // next month
+                monthProfit = (depositSum * (INTEREST_RATE / 100) / daysInYear * daysInMonth);
+                sumOfProfit += monthProfit;
+                
+                switch (month) {
+                    case 0 : monthText = "January"; break;
+                    case 1 : monthText = "February"; break;
+                    case 2 : monthText = "March"; break;
+                    case 3 : monthText = "April"; break;
+                    case 4 : monthText = "May"; break;
+                    case 5 : monthText = "June"; break;
+                    case 6 : monthText = "July"; break;
+                    case 7 : monthText = "August"; break;
+                    case 8 : monthText = "September"; break;
+                    case 9 : monthText = "October"; break;
+                    case 10 : monthText = "November"; break;
+                    case 11 : monthText = "December"; break;
+                }
+                
+                monthProfitOutput += "In " + i +" month (" + monthText + " " + currentYear + ") deposit profit will be " + monthProfit.toFixed(2) + "\n";
+                
+                if (month == 11) { // exception for months of new year
+                    currentYear++;
+                    currentYear%4 ? daysInYear = 366 : daysInYear  = 365;
+                }
+            }
+
+            var profitPlusDeposit = depositSum + sumOfProfit;
+
+            /* OUTPUT */
+            alert("Your deposit – " + depositSum + "\n"
+            + "Term of saving deposit – " + monthOfSaving + " months\n"
+            + "Interest rate – " + INTEREST_RATE + "%\n"
+            + "\n" + monthProfitOutput + "\n"
+            + "Sum of deposit profit – " + sumOfProfit.toFixed(2) + "\n"
+            + "Total sum at the end of the term – " + profitPlusDeposit.toFixed(2));
+        </script>
+    </head>
+</html>

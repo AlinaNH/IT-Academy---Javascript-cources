@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cycles – Money to text</title>
+        <script>
+            "use strict"
+            var money = +prompt("Введите сумму денег");
+
+            var hasThousand, hasHundred, hasDozen, hasUnit;
+            var thousandDigit, hundredDigit, dozenDigit, unitDigit;
+
+            (hasThousand = parseInt(money / 1000)) ? // thousand digit
+                thousandDigit = +(hasThousand + "000") :
+                thousandDigit = 0;
+
+            (hasHundred = parseInt((money - thousandDigit) / 100)) ? // hundred digit
+                hundredDigit = +(hasHundred + "00") : 
+                hundredDigit = 0;
+
+            (hasDozen = parseInt((money - thousandDigit - hundredDigit) / 10)) ? // dozen digit
+                dozenDigit = +(hasDozen + "0") : 
+                dozenDigit = 0;
+
+            (hasUnit = parseInt(money - thousandDigit - hundredDigit - dozenDigit)) ? // unit digit
+                unitDigit = hasUnit : 
+                unitDigit = 0;
+
+            function parseDigitToText(digit, digitText) { // function which make name of numbers in words. digitText is necessary to understand what data must be output
+                var thousand, hundred, dozen, unit, ruble;
+                switch(digit) {
+                    case 0 :
+                        thousand = "";
+                        hundred = "";
+                        dozen = "";
+                        unit = "ноль";
+                        ruble = "рублей";
+                        break;
+                    case 1 :
+                        thousand = "одна тысяча";
+                        hundred = "сто";
+                        dozen = "десять";
+                        unit = "один";
+                        ruble = "рубль";
+                        break;
+                    case 2 :
+                        thousand = "две тысячи";
+                        hundred = "двести";
+                        dozen = "двадцать";
+                        unit = "два";
+                        ruble = "рубля";
+                        break;
+                    case 3 :
+                        thousand = "три тысячи";
+                        hundred = "триста";
+                        dozen = "тридцать";
+                        unit = "три";
+                        ruble = "рубля";
+                        break;
+                    case 4 :
+                        thousand = "четыре тысячи";
+                        hundred = "четыреста";
+                        dozen = "сорок";
+                        unit = "четыре";
+                        ruble = "рубля";
+                        break;
+                    case 5 :
+                        thousand = "пять тысяч";
+                        hundred = "пятьсот";
+                        dozen = "пятьдесят";
+                        unit = "пять";
+                        ruble = "рублей";
+                        break;
+                    case 6 :
+                        thousand = "шесть тысяч";
+                        hundred = "шестьсот";
+                        dozen = "шестьдесят";
+                        unit = "шесть";
+                        ruble = "рублей";
+                        break;
+                    case 7 :
+                        thousand = "семь тысяч";
+                        hundred = "семьсот";
+                        dozen = "семьдесят";
+                        unit = "семь";
+                        ruble = "рублей";
+                        break;
+                    case 8 :
+                        thousand = "восемь тысяч";
+                        hundred = "восемьсот";
+                        dozen = "восемьдесят";
+                        unit = "восемь";
+                        ruble = "рублей";
+                        break;
+                    case 9 :
+                        thousand = "девять тысяч";
+                        hundred = "девятьсот";
+                        dozen = "девяносто";
+                        unit = "девять";
+                        ruble = "рублей";
+                        break;
+                }
+                if ((dozenDigit == 10) && (digitText == "unit")) {  
+                    switch (digit) {
+                        case 1 :
+                            unit = "одиннадцать";
+                            ruble = "рублей";
+                            break;
+                        case 2 :
+                            unit = "двенадцать";
+                            ruble = "рублей";
+                            break;
+                        case 3 :
+                            unit = "тринадцать";
+                            ruble = "рублей"; 
+                            break;
+                        case 4 :
+                            unit = "четырнадцать";
+                            ruble = "рублей";
+                            break;
+                        case 5 :
+                            unit = "пятнадцать";
+                            ruble = "рублей";
+                            break;
+                        case 6 :
+                            unit = "шестнадцать";
+                            ruble = "рублей";
+                            break;
+                        case 7 :
+                            unit = "семнадцать";
+                            ruble = "рублей";
+                            break;
+                        case 8 :
+                            unit = "восемнадцать";
+                            ruble = "рублей";
+                            break;
+                        case 9 :
+                            unit = "девятнадцать";
+                            ruble = "рублей";
+                            break;
+                    }
+                }
+                
+                if ((dozenDigit == 10) && (unitDigit > 0) && (digitText == "dozen")) { // exception for dozen output when numbers is 11-19
+                    dozen = "";
+                }
+                
+                if ((dozenDigit >= 10) && (unitDigit == 0) && (digitText == "unit")) { // exception for unit output when numbers doesn't have unit digit
+                    unit = "";
+                }
+
+                if ((hundredDigit >= 100) && (dozenDigit == 0) && (unitDigit == 0) && (digitText == "unit")) { // exception for dozen and unit output when numbers doesn't have dozen and unit digit
+                    dozen = "";
+                    unit = "";
+                }
+                
+                if ((thousandDigit >= 1000) && (hundredDigit == 0) && (dozenDigit == 0) && (unitDigit == 0) && (digitText == "unit")) { // exception for hundred, dozen and unit output when numbers doesn't have hundred, dozen and unit digit
+                    hundred = "";
+                    dozen = "";
+                    unit = "";
+                }
+                
+                if (digitText == "thousand") {
+                    return thousand;
+                }
+                if (digitText == "hundred") {
+                    return hundred;
+                }
+                if (digitText == "dozen") {
+                    return dozen;
+                }
+                if (digitText == "unit") {
+                    return unit + " " + ruble;
+                }
+            }
+
+            /* OUTPUT */
+
+            var thousandOutput = parseDigitToText(hasThousand, "thousand");
+            var hundredOutput = parseDigitToText(hasHundred, "hundred");
+            var dozenOutput = parseDigitToText(hasDozen, "dozen");
+            var unitOutput = parseDigitToText(hasUnit, "unit");
+
+            var result = thousandOutput + " " + hundredOutput + " " + dozenOutput + " " + unitOutput;
+
+            alert(result);
+        </script>
+    </head>
+</html>

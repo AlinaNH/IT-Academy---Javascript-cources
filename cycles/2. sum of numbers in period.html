@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Cycles – Sum of numbers in period</title>
+		<script>
+			"use strict"
+			var A = +prompt("Enter the start of interval");
+			var B = +prompt ("Enter the end of interval");
+			var sum = 0;
+			if (A < B) {
+			    for (let i = A; i <= B; i++) {
+			        sum += i;
+			    }
+			    alert("The sum of numbers between " + A +" and " + B + " is " + sum);
+			} else {
+			    alert ("Is is not a interval!");
+			}
+		</script>
+	</head>
+</html>
