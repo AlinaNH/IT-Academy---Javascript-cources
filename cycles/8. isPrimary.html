@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cycles – isPrimary</title>
+        <script>
+            var number = +prompt("Enter a number");
+var isPrimary = true;
+
+for (var i = 2; i < number; i++) {
+    if (number%i) {
+         continue;       
+    } else {
+        isPrimary = false;
+        break;
+    }
+}
+
+isPrimary ?
+    alert("It is a primary number")  :
+    alert("It is not a primary number");
+        </script>
+    </head>
+</html>
