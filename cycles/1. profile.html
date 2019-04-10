@@ -47,62 +47,13 @@
 			*/
 			var daysFromCurrentYear = parseInt((today - startOfCurrentYear) / 1000 / 60 / 60 / 24);
 
-			ageInDays +=var surname, name, secondName;
-
-			function isEmpty(data, message) {
-			    do {
-			        data = prompt("Please, enter your " + message);
-			    } while (!data)
-			    return data;
-			}
-
-			surname = isEmpty(surname, "surname");
-			name = isEmpty(name, "name");
-			secondName = isEmpty(secondName, "second name");
-
-			var age, dateOfBithday; // Date of birthday will be necessary when age in days will be counted
-
-			var date = new Date();
-			var currentYear = date.getFullYear();
-
-			if (isNaN(age)) { // ask age while it will be not a number
-			    do {
-			        age = isEmpty(age, "age in integer");
-			    } while (isNaN(age));
-			    age = parseInt(age); // make age like integer
-			    dateOfBithday = currentYear - age;
-			}
-
-			function getDaysInYear(year) { // function which has a view on leap years
-			    let daysInYear;
-			    year%4 == 0 ? daysInYear = 366 : daysInYear = 365;
-			    return daysInYear;
-			}
-
-			var ageInDays = 0;
-
-			for (let i = dateOfBithday; i < currentYear; i++) {
-			    ageInDays += getDaysInYear(i); // count all days from date of birthday till current year
-			}
-
-			var startOfCurrentYear = date.setFullYear(currentYear, 0, 1); // the 1st of January of current year
-			var today = date.setFullYear(currentYear, date.getMonth(), date.getDate()); // date of today
-			/* daysFromCurrentYear save data from the 1st of January (startOfCurrentYear) of current year till today. Value is in milliseconds. 
-			/ 1000 – value in seconds
-			/ 60 – value in hours
-			/ 24 – value in days
-			*/
-			var daysFromCurrentYear = parseInt((today - startOfCurrentYear) / 1000 / 60 / 60 / 24);
-
 			ageInDays += daysFromCurrentYear; // age in days from date of birthday till now
 
 			var ageAfter5Years = age + 5;
-			var genderType;
-			var gender = confirm ("Are you a man?");
-			gender == true? genderType = "man" : genderType = "woman";
 
-			var pensionStatus;
- daysFromCurrentYear; // age in days from date of birthday till now
+			var gender = confirm ("Are you a man?");
+			var genderType;
+			gender == true? genderType = "man" : genderType = "woman";
 
 			var pensionStatus;
 
@@ -117,7 +68,7 @@
 			+ "Your age (years): " + age + "\n"
 			+ "Your age (days): ~" + ageInDays + "\n"
 			+ "After 5 years you will be " + ageAfter5Years + " years old\n"
-			+ "Your genderType: " + gender + "\n"
+			+ "Your gender: " + genderType + "\n"
 			+ "Pension status: " + pensionStatus);
 		</script>
 	</head>
