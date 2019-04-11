@@ -3,17 +3,71 @@
     <head>
         <title>Cycles – Sum and Comp</title>
         <script>
-            var number = +prompt("Enter a number");
-            var sum = 0;
-var composition = 1;
-            
-            for (var i = 1; i <= number; i++) {
-                sum += i;
-                composition *= i;
+            var inputNumber = +prompt("Enter a number");
+
+            var digitAmount = findDigitAmount(inputNumber);
+            var firstDigitOfNumber = findFirstDigit(digitAmount);
+            var digitSum = findDigitSum(inputNumber, firstDigitOfNumber);
+            var digitComposition = findDigitComposition(inputNumber, firstDigitOfNumber);
+
+            alert("Your number is " + inputNumber + "\n" 
+                + "Sum of digits of this number is " + digitSum + "\n"
+                + "Composition of digits of this number is " + digitComposition);
+
+            function findDigitAmount(number) {
+                var digitValue = number;
+                var digitAmount = 0;
+                while (parseInt(digitValue) !== 0) {
+                    digitValue = digitValue / 10; // divides number by 10 in every iteration to find its digitAmount
+                    digitAmount++;
+                }
+                return digitAmount;
             }
-            
-            alert("Sum of figures of number " + number + " is " + sum);
-            alert("Composition of figures of number " + number + " is " + composition);
+
+            function findFirstDigit(digitAmount) {
+                var firstDigit = 1;
+                var zeroText = "0"; // is necessary for creating digits (10, 100, 1000...)
+                for (var i = 1; i < digitAmount; i++) {
+                    firstDigit += zeroText;
+                }
+                return firstDigit;
+            }
+
+            function findDigitSum(number, firstDigit) {
+                var figure; // figures of 24 are 2 and 4
+                var sum = 0;
+
+                while (firstDigit !== 0) {
+                    figure = parseInt(number / firstDigit);
+                    sum += figure;
+                    number = number - figure * firstDigit; // takes avay value of the current digit in every iteration
+                    firstDigit /= 10;
+                    if (firstDigit == 1) { // exception
+                        figure = number;
+                        sum += figure;
+                        firstDigit = 0;
+                    }
+                }
+                return sum;
+            }
+
+            function findDigitComposition(number, firstDigit) {
+                var figure; // figures of 24 are 2 and 4
+                var composition = 1;
+
+                while (firstDigit != 0) {
+                    figure = parseInt(number / firstDigit);
+                    composition *= figure;
+                    number = number - figure * firstDigit; // takes avay value of the current digit in every iteration
+                    firstDigit /= 10;
+                    if (firstDigit == 1) { // exception
+                        figure = number;
+                        composition *= figure;
+                        firstDigit = 0;
+                    }
+                }
+                return composition;
+            }    
         </script>
     </head>
 </html>
