@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Vowels</title>
+    <script>
+    "use strict"
+    var inputText = prompt("Введите текст");
+
+    countVowelsInText(inputText);
+
+    function countVowelsInText(inputText) {
+        var vowels = ["а", "е", "о", "и", "у", "ю", "э", "ы", "ё", "я", "А", "Е", "О", "И", "У", "Ю", "Э", "Ы", "Ё", "Я"];
+        var usedLetters = {};
+        var currentLetter; // is necessary for working with a letter separately in every iteration
+        for (var i = 0; i < inputText.length; i++) {
+            for(var j = 0; j < vowels.length; j++) {
+                if (inputText[i] == vowels[j]) {
+                    currentLetter = inputText[i];
+                    if (!(currentLetter in usedLetters)) {
+                        usedLetters[currentLetter] = 1;
+                    } else {
+                    usedLetters[currentLetter] = ++usedLetters[currentLetter];
+                    }
+                }
+            }
+        }
+
+        function outputCountedVowels() {
+            for (var i in usedLetters) {
+                console.log(i + " – " + usedLetters[i]);
+            }
+        }
+        return outputCountedVowels();
+    }
+    </script>
+  </head>
+</html>
