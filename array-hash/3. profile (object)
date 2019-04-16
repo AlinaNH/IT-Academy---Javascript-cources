@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile (object)</title>
+    <script>
+       var profile = {
+          surname: '',
+          name: '',
+          secondName: '',
+          ageInYears: 0,
+          ageInDays: 0,
+          ageAfter5Years: 0,
+          genderType: '',
+          pensionStatus: ''
+      }
+
+      profile.surname = isEmpty(profile.surname, "surname");
+      profile.name = isEmpty(profile.name, "name");
+      profile.secondName = isEmpty(profile.secondName, "secondName");
+      profile.ageInYears = parseInt( isEmpty(profile.ageInYears, "age") );
+
+      var date = new Date(),
+          currentYear = date.getFullYear(),
+          dateOfBirthday = currentYear - profile.ageInYears;
+
+      for (let i = dateOfBirthday; i < currentYear; i++) {
+          profile.ageInDays += getDaysInYear(i); // count all days from date of birthday till current year
+      }
+
+      var startOfCurrentYear = date.setFullYear(currentYear, 0, 1); // the 1st of January of current year
+      var today = date.setFullYear(currentYear, date.getMonth(), date.getDate()); /* date of today daysFromCurrentYear save data from the 1st of January of current year till today (today - startOfCurrentYear). Value is in milliseconds. 
+      / 1000 – value in seconds
+      / 60 – value in hours
+      / 24 – value in days
+      */
+      var daysFromCurrentYear = parseInt((today - startOfCurrentYear) / 1000 / 60 / 60 / 24);
+
+      profile.ageInDays += daysFromCurrentYear; // age in days from date of birthday till now
+
+      profile.ageAfter5Years = profile.ageInYears + 5;
+
+      var gender = confirm ("Are you a man?");
+      gender === true ? profile.genderType = "man" : profile.genderType = "woman";
+
+      if (gender === true) {
+          profile.ageInYears >= 61.5 ? profile.pensionStatus = "yes" : profile.pensionStatus = "no";
+      } else {
+          profile.ageInYears >= 56.5 ? profile.pensionStatus = "yes" : profile.pensionStatus = "no";
+      }
+
+      /* OUTPUT */
+      alert("Your name: " + profile.surname + " " + profile.name + " " + profile.secondName +"\n"
+      + "Your age (years): " + profile.ageInYears + "\n"
+      + "Your age (days): ~" + profile.ageInDays + "\n"
+      + "After 5 years you will be " + profile.ageAfter5Years + " years old\n"
+      + "Your gender: " + profile.genderType + "\n"
+      + "Pension status: " + profile.pensionStatus);
+
+      function isEmpty(data, message) {
+          do {
+              data = prompt("Please, enter your " + 
+              message);
+          } while (!data)
+          return data;
+      }
+
+      function getDaysInYear(year) { // function which has a view on leap years
+          return ( year%4 === 0 ? 366 : 365 );
+      }
+    </script>
+  </head>
+</html>
