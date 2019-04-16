@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>Fibonacci (recursion)</title>
+    <script>
+      var number = +prompt("Enter a number");
+      
+      function findFibonacci(n) {
+          return n<=1 ? n : findFibonacci(n-1) + findFibonacci(n-2);
+      }
+      alert(findFibonacci(number));
+    </script>
+  </head>
+</html>
