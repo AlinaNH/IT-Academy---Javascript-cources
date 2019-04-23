@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DRINKS_HASH</title>
+        <script>
+          "use strict"
+
+          class HashStorange {
+              addValue(key, value) {
+                  this[key] = value;
+              }
+
+              getValue(key) {
+                  return (key in this) ? this[key] : undefined;
+              }
+
+              deleteValue(key) {
+                  return (key in this) ? delete this[key] : false;
+              }
+
+              getKeys() {
+                  return Object.keys(this);
+              }
+          }
+
+          var drinkStorage = new HashStorange();
+          //drinkStorage.addValue('Margarita', {"alcoholic": "yes", "recipe": "1 part Cazadores Tequila, 0,5 part triple sec liqueur, 0,5 part lime juice, 1 lime wedge, Salt, Cubed ice – mix."});
+
+          function addNewDrink() {
+              var drinkName = prompt("Enter a name of the drink");
+              var isAlcoholic = prompt("Is this drink alcoholic?");
+              var recipe = prompt("Enter a recipe of this drink");
+              drinkStorage.addValue(drinkName, {"alcoholic": isAlcoholic, "recipe": recipe});
+              alert("Information is saved!");
+          }
+
+          function getInformationAboutDrink() {
+              var drinkName = prompt("Enter a name of the drink which you're interested in");
+              var result = drinkStorage.getValue(drinkName);
+              (result) ? alert("Drink: " + drinkName + "\n" 
+                             + "Alcoholic: " + drinkStorage[drinkName].alcoholic + "\n"
+                             + "Recipe: " + drinkStorage[drinkName].recipe)
+                       : alert("There is no drinks with this name in storage!");
+          }
+
+          function deleteDrink() {
+              var drinkName = prompt("Enter a name of the drink which you want to delete");
+              var result = drinkStorage.deleteValue(drinkName);
+              (result) ? alert("The drink is deleted!")
+                       : alert("There is no drinks with this name in storage!");
+          }
+
+          function showAllDrinks() {
+              var result = drinkStorage.getKeys();
+              (result.length) ? alert(result)
+                              : alert("The storage is empty!");
+          }
+        </script>
+    </head>
+    <body>
+        <h2>Drinks Hash</h2>
+        <button onclick="addNewDrink()">Add new drink</button><br/><br/>
+        <button onclick="getInformationAboutDrink()">Get information about drink</button><br/><br/>
+        <button onclick="deleteDrink()">Delete drink</button><br/><br/>
+        <button onclick="showAllDrinks()">Show all drinks</button>
+    </body>
+</html>
