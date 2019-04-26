@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Class Worker</title>
+    </head>
+    <script>
+      "use strict"
+
+      function Worker(newName, newSurname) {
+          var name = newName;
+          var surname = newSurname;
+          var rate;
+          var days;
+
+          this.getName = function() {
+              return name;
+          }
+          this.getSurname = function() {
+              return surname;
+          }
+          this.getRate = function() {
+              return rate;
+          }
+          this.getDays = function() {
+              return days;
+          }
+
+          this.setRate = function(newRate) {
+              rate = newRate;
+          }
+          this.setDays = function(newDays) {
+              days = newDays;
+          }
+
+          this.getSalary = function() {
+              return rate * days;
+          }
+      }
+
+      var newcomer = new Worker("Alina", "Nazarovich");
+      console.log(newcomer.getName());
+      console.log(newcomer.getSurname());
+      newcomer.setRate(40);
+      console.log(newcomer.getRate());
+      newcomer.setDays(24);
+      console.log(newcomer.getDays());
+      console.log(newcomer.getSalary());
+
+      console.log("");
+
+      var employee = new Worker("Lorem", "Ipsum");
+      console.log(employee.getName());
+      console.log(employee.getSurname());
+      employee.setRate(65);
+      console.log(employee.getRate());
+      employee.setDays(24);
+      console.log(employee.getDays());
+      console.log(employee.getSalary());
+    </script>
+</html>
