@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Array cases</title>
+    </head>
+    <script>
+      "use strict"
+
+      /* EXCERSICE 1 */
+
+      console.log("Excersice 1 (array with zeros in the beginning)");
+      var arr1 = [1, -8, 0, 12, 0, 0, 0, "hi", 4, 0, "hi", 5];
+      console.log(arr1);
+      for (var i = 0; i < arr1.length; i++) {
+          if (arr1[i] === 0) {
+              arr1.splice(i, 1);
+              arr1.unshift(0);
+              --i;
+          }
+      };
+      console.log(arr1);
+      console.log("");
+
+      /* EXCERSICE 3 */
+
+      console.log("Excersice 3 (delete even numbers passed x 2 and odd numbers passed x 3)");
+      var arr3 = [2, 5, 4, 5, 2, 5, 8, 2, 6, 8, 5, 6, 7, 1];
+      console.log(arr3);
+      var used = {};
+      for (var i = 0; i < arr3.length; i++){
+          (arr3[i] in used) ? ++used[arr3[i]] : used[arr3[i]] = 1 ;
+      }
+      for (var i in used) {
+          if ((i%2 == 0) && (used[i] >= 2)) {
+              for (var j = 0; j < arr3.length; j++) {
+                  if(i == arr3[j]) {
+                     arr3.splice(j, 1);
+                     --j;
+                  }
+              }
+          }
+          if ((i%2 != 0) && (used[i] >= 3)) {
+              for (var j = 0; j < arr3.length; j++) {
+                  if(i == arr3[j]) {
+                      arr3.splice(j, 1);
+                      --j;
+                  }
+              }
+          }
+      }
+      console.log(arr3);
+      console.log("");
+
+      /* EXCERSICE 4 */
+
+      console.log("Excersice 4 (equal pairs in random array)");
+      var arr4 = [];
+      for(var i = 0; i < 21; i++) { // numbers from 1 to 10
+          arr4[i] = Math.floor(Math.random() * 11);
+      }
+      console.log(arr4);
+      for (var i = 0; i < arr4.length; i++) {
+          if (arr4[i] == arr4[i + 1]) {
+              console.log (arr4[i] + ": positions " + i + " and " + (i + 1));
+          }
+      }
+      console.log("");
+
+      /* EXCERSICE 5 */
+
+      console.log("Excersice 5 (sum of element's numbers of array)")
+      var arr5 = [12, 3, 45, 67];
+      console.log(arr5);
+      var sum = 0, element = [];
+      for (var i = 0; i < arr5.length; i++) {
+          element.push(String(arr5[i]).split("")); // [12, 15] => [["1", "2"], ["1", "5"]];
+      }
+      element = element.flat(2); // [["1", "2"], ["1", "5"]] => ["1", "2", "1", "5"]
+      for (i = 0; i < element.length; i++) {
+          sum += +element[i];
+      }
+      console.log(sum);
+      console.log("");
+
+      /* EXCERSICE 6 */
+      console.log("Excersice 6 (find all |elements| > max(arr))")
+      var arr6 = [14, 6, -8, 16, -32, 2, 7, -24];
+      console.log(arr6);
+      console.log(arr6.filter(e => Math.abs(e) > Math.max(...arr6)));
+    </script>
+</html>
