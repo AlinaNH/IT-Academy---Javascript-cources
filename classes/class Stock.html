@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>Stock</title>
+        <script>
+          "use strict"
+
+          function addProduct() {
+
+          }
+
+          class Stock {
+
+              constructor() {
+                  this.productArray = [];
+                  this.stockNumber = 1;
+              }
+
+              addProduct(newProduct) {
+                  newProduct.stockNumber = this.stockNumber;
+                  var isAdded = this.productArray.push(newProduct);
+                  this.stockNumber++;
+                  return "Product " + this.productArray[this.productArray.length - 1].name + " is added to Stock.";
+              }
+
+              findProduct(productName) {
+                  var hasProduct = this.productArray.filter(productObject => productObject.name == productName);
+                  var foundProduct = "";
+                  if (hasProduct.length) {
+                      for (var characteristic in hasProduct[0]) {
+                          foundProduct += characteristic + ": " + hasProduct[0][characteristic] + "\n";
+
+                      }
+                      return foundProduct;
+                  } else {
+                      return "There is no products with this name in the Stock!";
+                  }
+              }
+
+              releaseProduct(stockNumber, amountToRelease) {
+                  var hasProduct = this.productArray.filter(productObject => productObject.stockNumber == stockNumber);
+                  var confirmationOfRelease = confirm("Do you confirm the release of the product '" + hasProduct[0].name + "' in the amount of " + amountToRelease + "?");
+                  if(confirmationOfRelease) {
+                      this.productArray.forEach(productObject => {
+                          if (productObject.stockNumber == stockNumber) productObject.amount -= amountToRelease;
+                      });
+                      return "Product is released.";
+                  } else {
+                      return "An error has occured. Please, try again.";
+                  }
+              }
+
+              getStockBalance() {
+                  var stockBalance = "";
+                  this.productArray.forEach(productObject => stockBalance += "Product name: " + productObject.name + " | Amount: " +
+                  productObject.amount + "\n");
+
+                 return stockBalance ?
+                      stockBalance :
+                      "The Stock is empty!";
+              }
+
+          }
+
+          class Product {
+
+              constructor(itsName, itsAmount) {
+                  this.name = itsName;
+                  this.amount = itsAmount;
+              }
+
+          }
+
+          class Television extends Product {
+
+              constructor(itsName, itsAmount, itsWeight) {
+                  super(itsName, itsAmount);
+                  this.weigth = itsWeight;
+              }
+
+          }
+
+          class Refrigerator extends Product {
+
+              constructor(itsName, itsAmount, itsWidth, itsHeight) {
+                  super(itsName, itsAmount);
+                  this.width = itsWidth;
+                  this.height = itsHeight;
+
+              }
+          }
+
+          class Paint extends Product {
+
+              constructor(itsName, itsAmount, itsColor) {
+                  super(itsName, itsAmount);
+                  this.color = itsColor;
+              }
+
+          }
+
+          /* CHECKING */
+
+          /*var stock = new Stock;
+          var multiColorRed = new Paint("Multicolor", "300", "red");
+          var samsung20 = new Television("Samsung", "5000", "20");
+          console.log(stock.addProduct(multiColorRed));
+          console.log(stock.addProduct(samsung20));
+          var hasMultiColord = stock.findProduct("Multicolord");
+          var hasSamsung= stock.findProduct("Samsung");
+          alert(hasMultiColord);
+          alert(hasSamsung);
+          var release23MultiColor = stock.releaseProduct(1, 23);
+          console.log(release23MultiColor);
+          var stockBalance = stock.getStockBalance();
+          alert(stockBalance);*/
+        </script>
+    </head>
+</html>
