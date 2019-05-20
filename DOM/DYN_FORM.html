@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DYN_FORM</title>
+    </head>
+    <body>
+        <form id="def1">
+        </form>
+        <hr/>
+        <form id="def2">
+        </form>
+        <script>
+            var formDef1 = [
+            {label:'Название сайта: ', kind:'longtext', name:'sitename'},
+            {label:'URL сайта: ', kind:'longtext', name:'siteurl'},
+            {label:'Посетителей в сутки:', kind:'number', name:'visitors'},
+            {label:'E-mail для связи: ', kind:'shorttext', name:'email'},
+            {label:'Рубрика каталога: ', kind:'combo', name:'division', variants:[
+                {text:'здоровье',value:1},
+                {text:'домашний уют',value:2},
+                {text:'бытовая техника',value:3}]},
+            {label:'Размещение:', kind:'radio', name:'payment', variants:[
+                {text:'бесплатное', value:1},
+                {text:'платное', value:2},
+                {text:'VIP', value:3}]},
+            {label:'Разрешить отзывы: ', kind:'check', name:'votes'},
+            {label:'Описание сайта: ', kind:'memo', name:'description'},
+            {label:'Опубликовать: ', kind:'submit'}];
+
+        var formDef2 = [
+            {label:'Фамилия: ', kind:'longtext', name:'lastname'},
+            {label:'Имя: ', kind:'longtext', name:'firstname'},
+            {label:'Отчество: ', kind:'longtext', name:'secondname'},
+            {label:'Возраст: ', kind:'number', name:'age'},
+            {label:'Зарегистрироваться: ', kind:'submit'}];
+
+        var formID1 = document.getElementById("def1");
+        var formID2 = document.getElementById("def2");
+
+        makeForm(formID1, formDef1);
+        makeForm(formID2, formDef2);
+
+        function makeForm(form, formData) {
+            var newLabel, newLabelText, newElement, newOption, newOptionText;
+
+            for (var i = 0; i < formData.length; i++) {
+                 newLabel = document.createElement("label");
+                 newLabelText = document.createTextNode(formData[i].label);
+                 newLabel.appendChild(newLabelText);
+                 form.appendChild(newLabel);
+
+                 switch(formData[i].kind) {
+
+                     case "longtext":
+                         newElement = document.createElement("input");
+                         newElement.type = "text";
+                         newElement.name = formData[i].name;
+                         break;
+
+                     case "number":
+                         newElement = document.createElement("input");
+                         newElement.type = "number";
+                         newElement.name = formData[i].name;
+                         break;
+
+                     case "shorttext":
+                         newElement = document.createElement("input");
+                         newElement.type = "text";
+                         newElement.name = formData[i].name;
+                         newElement.size = "10";
+                         break;
+
+                     case "combo":
+                         newElement = document.createElement("select");
+                         formData[i].variants.forEach(variant => {
+                             newOption = document.createElement("option");
+                             newOption.value = variant.value;
+                             newOptionText = document.createTextNode(variant.text);
+                             newOption.appendChild(newOptionText);
+                             newElement.appendChild(newOption);
+                         });
+                         break;
+
+                     case "radio":
+                         newElement = document.createElement("div");
+                         formData[i].variants.forEach(variant => {
+                             newOption = document.createElement("input");
+                             newOption.type = "radio";
+                             newOption.name = formData[i].name;
+                             newOption.value = variant.value;
+                             newElement.appendChild(newOption);
+                             newOption = document.createElement("label");
+                             newOptionText = document.createTextNode(variant.text);
+                             newOption.appendChild(newOptionText);
+                             newElement.appendChild(newOption);
+                         });
+                         break;
+
+                     case "check":
+                         newElement = document.createElement("input");
+                         newElement.type = "checkbox";
+                         newElement.name = formData[i].name;
+                         break;
+
+                     case "memo":
+                         newElement = document.createElement("textarea");
+                         newElement.rows = 5;
+                         newElement.cols = 35;
+                         break;
+
+                     case "submit":
+                         newElement = document.createElement("input");
+                         newElement.type = "submit";
+                         newElement.name = formData[i].name;
+                         break;
+
+                 }
+
+                 form.appendChild(newElement);
+
+                 form.appendChild(document.createElement("br"));
+                 form.appendChild(document.createElement("br"));
+            }
+        }
+        </script>
+    </body>
+</html>
