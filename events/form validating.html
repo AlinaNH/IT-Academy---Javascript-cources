@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Form Validating</title>
+    </head>
+    <body>
+        <form method="POST" action="TestForm.php" target="_blank" name="developers">
+            <table class="SNoBorders">
+                <tbody>
+                    <tr>
+                        <td>Разработчики:</td>
+                        <td><input type="text" name="author" style="width: 453px"></td>
+                    </tr>
+                    <tr>
+                        <td>Название сайта:</td>
+                        <td><input type="text" name="title" style="width: 453px"></td></tr>
+<tr><td>URL сайта:</td>
+                        <td><input type="text" name="title" style="width: 300px"></td>
+                    </tr>
+                    <tr>    
+                        <td>Дата запуска сайта:</td>
+                        <td><input type="text" name="startdate" style="width: 80px"></td>
+                    </tr>
+                    <tr>
+                        <td>Посетителей в сутки:</td>
+                        <td><input type="text" name="persons" style="width: 80px"></td>
+                    </tr>
+                    <tr>
+                        <td>E-mail для связи:</td>
+                        <td><input type="text" name="title" style="width: 200px"></td>
+                    </tr>
+                    <tr>
+                        <td>Рубрика каталога:</td>
+                        <td style="padding-left: 1px">
+  <select name="rubric" style="width: 204px; margin-left: 2px">
+                            <option value="1">здоровье</option>
+                            <option value="2">домашний уют</option>
+                            <option value="3" selected="">бытовая техника</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>Размещение:</td>
+                        <td style="padding: 2px 0 2px 0">
+                            <input type="radio" name="public" value="1"><span class="SRadio8a">бесплатное</span>
+                            <input type="radio" name="public" value="2"><span class="SRadio8a">платное</span>
+                            <input type="radio" name="public" value="3"><span class="SRadio8a">VIP</span>
+                        </td>
+                   </tr>
+                   <tr>
+                       <td style="padding: 2px 0 3px 3px">Разрешить&nbsp;отзывы:</td>
+                       <td><input type="checkbox" name="comments"></td>
+                   </tr>
+                   <tr>
+                       <td colspan="2">Описание сайта:<br/>
+                           <textarea id="a" name="article" style="width: 608px; height: 50px"></textarea>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td><input id="submit" type="submit" value="Опубликовать" onclick="validate()"></td>
+                   </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <script>
+            var radios = [];
+            var submit = document.getElementById("submit");
+            submit.onclick = function(event) {
+                var inputs = document.forms['developers'].querySelectorAll("input");
+            inputs.forEach(input => {
+                if ((input.type == "text") && (input.value.length === 0)) {
+                    event.preventDefault();
+                    input.style.border = "1px solid red";
+                }
+                if ((input.type == "text") && (input.value.length > 0)) {
+                    input.style.border = "1px solid green";
+                }
+                
+                if ((input.type == "checkbox") && (input.checked === false)) {
+                    if (!input.nextSibling) {
+                        event.preventDefault();
+                        var message = document.createTextNode("Вы не поставили галочку");
+                        input.parentNode.appendChild(message);
+                        input.parentNode.style.color = "red";
+                    }
+                }
+                if ((input.type == "checkbox") && (input.checked === true)) {
+                    if (input.nextSibling) {
+                        input.parentNode.removeChild(input.parentNode.lastChild);
+                    }
+                }
+                
+                if (input.type == "radio") {
+                    radios.push(input);
+                }
+            });
+            
+            var textarea = document.getElementById("a");
+            if (textarea.value.length === 0) {
+                event.preventDefault();
+                textarea.style.border = "1px solid red";
+            }
+            if (textarea.value.length > 0) {
+                textarea.style.border = "1px solid green";
+            }
+            
+            var radioChecked = false
+            radios.forEach(radio => {
+                if (radio.checked === true) radioChecked = true;
+            });
+            
+            if (!radioChecked) {
+                event.preventDefault();
+                radios[radios.length-1].parentNode.style.color = "red";
+            } else {
+                if (radios[radios.length-1].parentNode.style.color == "red") {
+                    radios[radios.length-1].parentNode.style.color = "black";
+                }
+            }
+        }
+        </script>
+    </body>
+</html>
