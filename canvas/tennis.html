@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tennis</title>
+        <style>
+            #field {
+                width: 600px;
+                height: 350px;
+                background-color: #A8EBBE;
+                position: relative;
+            }
+            
+            #ball {
+                width: 30px;
+                height: 30px;
+                left: 285px;
+                top: 160px;
+                background-color: #EDA112;
+                border-radius: 20px;
+                position: absolute;
+            }
+            
+            #leftRacket {
+                width: 10px;
+                height: 100px;
+                left: 0px;
+                top: 0px;
+                background-color: #3C8057;
+                position: absolute;
+            }
+            
+            #rightRacket {
+                width: 10px;
+                height: 100px;
+                left: 590px;
+                top: 0px;
+                background-color: #30786D;
+                position: absolute;
+            }
+            
+           #startButton {
+                font-size: 20px;
+                font-family: Arial;
+                margin-bottom: 15px;
+            }
+            
+            #score {
+                font-size: 35px;
+                font-family: Arial;
+                display: inline;
+                margin-left: 170px;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="startButton">Play!</button>
+        <div id="score">0 : 0</div>
+        <div id="field">
+            <div id="ball"></div>
+            <div id="leftRacket"></div>
+            <div id="rightRacket"></div> 
+        </div>
+        
+        <script>
+            var field = document.getElementById("field"),
+                ball = document.getElementById("ball"),
+                leftRacket = document.getElementById("leftRacket"),
+                rightRacket = document.getElementById("rightRacket"),
+                startButton = document.getElementById("startButton"),
+                score = document.getElementById("score"),
+                fieldStyle = getComputedStyle(field),
+                ballStyle = getComputedStyle(ball),
+                leftRacketStyle = getComputedStyle(leftRacket),
+                rightRacketStyle = getComputedStyle(rightRacket),
+                renderInterval = 40,
+                randomMovement,
+                resumeGame = false;
+                
+            const fieldData = {
+                width: parseStyleValueToNumber(fieldStyle, "width"),
+                height: parseStyleValueToNumber(fieldStyle, "height")
+            };
+            
+            const ballData = {
+                posX: parseStyleValueToNumber(ballStyle, "left"),
+                posY: parseStyleValueToNumber(ballStyle, "top"),
+                width: parseStyleValueToNumber(ballStyle, "width"),
+                height: parseStyleValueToNumber(ballStyle, "height"),
+                speedX: 3,
+                speedY: 3,
+                update: function() {
+                    ball.style.left = Math.round(this.posX) + "px";
+                    ball.style.top = Math.round(this.posY) + "px";
+                }
+                
+            };
+            
+            const leftRacketData = {
+                width: parseStyleValueToNumber(leftRacketStyle, "width"),
+                height: parseStyleValueToNumber(leftRacketStyle, "height"),
+                posX: parseStyleValueToNumber(leftRacketStyle, "left"),
+                posY: parseStyleValueToNumber(leftRacketStyle, "top"),
+                update: function() {
+                    leftRacket.style.top = Math.round(this.posY) + "px";
+                }
+            };
+            
+            const rightRacketData = {
+                width: parseStyleValueToNumber(rightRacketStyle, "width"),
+                height: parseStyleValueToNumber(rightRacketStyle, "height"),
+                posX: parseStyleValueToNumber(rightRacketStyle, "left"),
+                posY: parseStyleValueToNumber(rightRacketStyle, "top"),
+                update: function() {
+                    rightRacket.style.top = Math.round(this.posY) + "px";
+                }
+            };
+                
+            var leftRacketScore = 0,
+                rightRacketScore = 0;
+                
+            
+            function parseStyleValueToNumber(computedStyle, styleProperty) {
+                return +computedStyle[styleProperty].slice(0, -2);
+            }
+            
+            startButton.addEventListener("click", function() {
+                randomMovement = getRandomMovement();
+                startGame = setInterval(move, renderInterval);
+            });
+            
+            function move() {
+                if (randomMovement.x == "+") { // random x movement
+                    ballData.posX += ballData.speedX;
+                } else {
+                    ballData.posX -= ballData.speedX;
+                }
+                
+                if (randomMovement.y == "+") { // random y movement
+                    ballData.posY += ballData.speedY;
+                } else {
+                    ballData.posY -= ballData.speedY;
+                }
+                
+                if (ballData.posY < 0) { // to face with top wall
+                    ballData.speedY = -ballData.speedY;
+                    ballData.posY = 0;
+                }
+                
+                if (ballData.posY + ballData.height > fieldData.height) { // to face with bottom wall
+                    ballData.speedY = -ballData.speedY;
+                    ballData.posY = fieldData.height - ballData.height;
+                }
+                
+                if (ballData.posX < 0) { // to face with left wall
+                    scoreGoal("rightRacket");
+                    return;
+                }
+
+                if (ballData.posX + ballData.width >= fieldData.width) { // to face with right wall
+                    scoreGoal("leftRacket");
+                    return;
+                }
+                
+                if ((ballData.posX <= leftRacketData.posX + leftRacketData.width) && (ballData.posY >= leftRacketData.posY) && (ballData.posY <= leftRacketData.posY + leftRacketData.height)) { // to face with left racket
+                    ballData.speedX = -ballData.speedX;
+                }
+                if ((ballData.posX + ballData.width >= rightRacketData.posX) && (ballData.posY >= rightRacketData.posY) && (ballData.posY <= rightRacketData.posY + rightRacketData.height)) { // to face with right racket
+                    ballData.speedX = -ballData.speedX;
+                    ballData.posX = fieldData.width - ballData.width - rightRacketData.width;
+                }
+                
+                ballData.update();
+            }
+            
+            
+            function resumeGame() {
+                if (resumeGame) {
+                    startGame = setInterval(move, renderInterval);
+                }
+            }
+            
+            function getRandomInteger(min, max) {
+                return Math.floor(min + Math.random() * (max + 1 - min));
+            }
+            
+            function getRandomMovement() {
+                var randomMovement,
+                    route = {};
+                randomMovement = getRandomInteger(0, 1);
+                if (randomMovement) {
+                    route.x = "+";
+                } else {
+                    route.x = "-";
+                }
+                
+                randomMovement = getRandomInteger(0, 1);
+                if (randomMovement == 1) {
+                    route.y = "+";
+                } else {
+                    route.y = "-";
+                }
+                return route;
+            }
+            
+            function scoreGoal(racket) {
+                var centerBall = placeBallToCenter();
+                ballData.posX = centerBall.posCenterX;
+                ballData.posY = centerBall.posCenterY;
+                clearInterval(startGame);
+                switch (racket) {
+                    case "leftRacket":
+                        ++leftRacketScore;
+                        score.innerHTML = leftRacketScore + " : " + rightRacketScore;
+                    break;
+                    case "rightRacket":
+                        ++rightRacketScore;
+                        score.innerHTML = leftRacketScore + " : " + rightRacketScore;
+                    break;
+                }
+            }
+            
+            function placeBallToCenter() {
+                var coordinatesofBallInCenter = {};
+                coordinatesofBallInCenter.posCenterX = Math.round(fieldData.width / 2) - Math.round(ballData.width / 2);
+                coordinatesofBallInCenter.posCenterY = Math.round(fieldData.height / 2) - Math.round(ballData.height / 2);
+                return coordinatesofBallInCenter;
+            }
+            
+            document.addEventListener('keydown', function(event) {
+                switch (event.keyCode) {
+                    case 16:
+                        moveRacket(leftRacketData, "top");
+                    break;
+                    case 17:
+                        moveRacket(leftRacketData, "bottom");
+                    break;
+                    case 38:
+                        moveRacket(rightRacketData, "top");
+                    break;
+                    case 40:
+                        moveRacket(rightRacketData, "bottom");
+                    break;
+                }
+            });
+            
+            function moveRacket(racket, conorSide) {
+                const moveStep = 5;
+                switch (conorSide) {
+                    case "top":
+                        if (racket.posY != 0) {
+                            racket.posY -= moveStep;
+                        } else {
+                            racket.posY == 0;
+                        }
+                    break;
+                    case "bottom":
+                        if (racket.posY != fieldData.height - racket.height) {
+                            racket.posY += moveStep;
+                        } else {
+                            racket.posY == fieldData.height - leftRacketData.height;
+                        }
+                    break;
+                }
+                racket.update();
+            }
+        </script>
+    </body>
+</html>
