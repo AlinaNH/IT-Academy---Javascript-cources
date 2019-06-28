@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Clock CANVAS</title>
+        <style>
+            #clock {
+                position: relative;
+            }
+            
+            #electronicTime {
+                position: absolute;
+                top: 200px;
+                left: 200px;
+            }
+            
+            #electronicTime span {
+                font-size: 32px;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="clock" width="500" height="500">Обновите браузер
+        </canvas>
+        <div id="electronicTime"></div>
+        
+        <script>
+            setInterval(drawClock, 1000);
+            
+            function drawClock() {
+                var clock = document.getElementById("clock"),
+                    context = clock.getContext("2d"),
+                    xCenterClock = 250,
+                    yCenterClock = 250,
+                    radiusClock = 200,
+                    radiusHourPoint = 25,
+                    radiusNum = radiusClock - 40,
+                    xPointHour,
+                    yPointHour,
+                    indentBetweenHours = 30,
+                    xText,
+                    yText,
+                    hourLine = 90,
+                    minuteLine = 120,
+                    secondLine = 150,
+                    date = new Date();
+                
+                /* clock round */
+                
+                context.beginPath();
+                context.fillStyle = "rgb(255, 237, 115)";
+                context.beginPath();
+                context.arc(xCenterClock, yCenterClock, radiusClock, 0, Math.PI*2, false);
+                context.fill();
+                
+                /* clock hours */
+                
+                for(var hour = 1; hour <= 12; hour++){
+                    context.beginPath();
+                    context.fillStyle = "rgb(141, 203, 131)";
+                    xPointHour = xCenterClock + radiusNum * Math.cos( -indentBetweenHours * hour * (Math.PI / 180) + Math.PI / 2);
+                    yPointHour = yCenterClock - radiusNum * Math.sin( -indentBetweenHours * hour * (Math.PI / 180) + Math.PI / 2);
+                    context.arc(xPointHour, yPointHour, radiusHourPoint, 0, 2 * Math.PI, true);
+                    context.fill();
+                    
+                    context.beginPath();
+                    context.fillStyle = "rgb(0, 0, 0)";
+                    context.font='bold 28px Arial';
+                    xText = xCenterClock + radiusNum * Math.cos(-indentBetweenHours * hour * (Math.PI / 180) + Math.PI / 2);
+                	yText = yCenterClock - radiusNum * Math.sin(-indentBetweenHours * hour * (Math.PI / 180) + Math.PI / 2);
+                	if (hour <= 9) {
+                		context.fillText(hour, xText - 7, yText + 10);
+                	} else {
+                		context.fillText(hour, xText - 15, yText + 10);
+                	}
+                    context.fill();
+                } 
+	
+                
+                /* hour line */
+                
+                hours = 30 * date.getHours();
+                context.fillStyle = "rgb(0, 0, 0)";
+                context.lineWidth = 9;
+                context.lineCap = "round";
+                context.beginPath();
+                context.moveTo(xCenterClock, yCenterClock);
+                context.lineTo(xCenterClock + hourLine * Math.cos(Math.PI / 2 - hours * (Math.PI / 180)), 
+                    xCenterClock - hourLine * Math.sin(Math.PI / 2 - hours * (Math.PI / 180)));
+                context.stroke(); 
+                
+                /* minute line */
+                
+                minutes = 6 * date.getMinutes();
+                context.fillStyle = "rgb(0, 0, 0)";
+                context.lineWidth = 5;
+                context.lineCap = "round";
+                context.beginPath();
+                context.moveTo(xCenterClock, xCenterClock);
+                context.lineTo(xCenterClock + minuteLine * Math.cos(Math.PI / 2 - minutes * (Math.PI / 180)), 
+                    xCenterClock - minuteLine * Math.sin(Math.PI / 2 - minutes * (Math.PI / 180)));
+                context.stroke();
+                
+                /* second line */
+                
+                secs = 6 * date.getSeconds();
+                context.fillStyle = "rgb(0, 0, 0)";
+                context.lineWidth = 2;
+                context.beginPath();
+                context.moveTo(xCenterClock, xCenterClock);
+                context.lineTo(xCenterClock + secondLine * Math.cos(Math.PI / 2 - secs * (Math.PI / 180)), 
+                    xCenterClock - secondLine * Math.sin(Math.PI / 2 - secs * (Math.PI / 180)));
+                context.stroke();
+                
+                /* electronic time */
+                
+                updateTime();
+            }
+            
+
+            function updateTime() {
+                var currentTime = new Date();
+                var currentTimeString = formatTime(currentTime);
+                document.getElementById('electronicTime').innerHTML = currentTimeString;
+            }
+        
+            function formatTime(dateObject) {
+                var hours = dateObject.getHours();
+                var minutes = dateObject.getMinutes();
+                var seconds = dateObject.getSeconds();
+                return "<span>" + makeTimeWithZeros(hours, 2) + ':' + makeTimeWithZeros(minutes, 2) + ':' + makeTimeWithZeros(seconds, 2) + "</span>";
+            }
+        
+            function makeTimeWithZeros(value,length) {
+                var stringValue = value.toString();
+                while (stringValue.length < length)
+                    stringValue = '0' + stringValue;
+                return stringValue;
+            }
+
+        </script>
+    </body>
+</html>
